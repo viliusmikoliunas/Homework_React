@@ -8,21 +8,32 @@ export default class TodoApp extends React.Component {
     this.state = {
       inputValue: '',
       todoItemList: [
-        <TodoItem key="1" title="item 1" deleteItem={this.deleteItem} />,
-        <TodoItem key="2" title="item 4" deleteItem={this.deleteItem}/>
+        <TodoItem key="1" id="1" title="item 1" deleteItem={this.deleteItem.bind(this)} />,
+        <TodoItem key="2" id="2" title="item 4" deleteItem={this.deleteItem.bind(this)}/>
       ]
     };
   }
 
   addTodoItem (e){
     e.preventDefault();
+    //id cannot start with a number, su add a letter at the begining 
+    let newId = 'tdi-' + Math.random().toString(36).substring(2, 15);
     this.setState({
-      todoItemList: [...this.state.todoItemList, <TodoItem key="3" title={this.state.inputValue} deleteItem={this.deleteItem}/>]
+      todoItemList: [
+        ...this.state.todoItemList, 
+        <TodoItem 
+          key={newId}
+          id={newId}
+          title={this.state.inputValue} 
+          deleteItem={this.deleteItem.bind(this)}
+        />
+      ]
     });
   }
 
-  deleteItem(){
-    console.log('delete it!');
+  deleteItem(itemId){
+    let newList = this.state.todoItemList.filter(item => item.props.id !== itemId);
+    this.setState({todoItemList: newList});
   }
 
   inputChanged(e){
