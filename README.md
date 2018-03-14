@@ -2,6 +2,8 @@
 
 To Load:
 1. ```npm install webpack-cli -g```
-2. ```npm i``` or ```npm install```
-3. ```webpack -p```
-4. ```npm run-script start``` or ```npm start```
+2. ```npm install webpack-cli -D```
+3. ```npm install webpack -g```
+4. ```npm i``` or ```npm install```
+5. ```webpack -p```
+6. ```npm run-script start``` or ```npm start```
