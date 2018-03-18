@@ -1,7 +1,16 @@
 import React from 'react';
 
-const TodoItem = (props) =>{
-    return <li>{props.title} - <span onClick={() => props.deleteItem(props.id)}>Delete</span></li>
+export const TodoItem = (props) =>{
+    return <ul>
+        <input type="checkbox" onClick={() => props.handleItemCheck(props.id)}/>
+        {props.title} -
+        <button onClick={() => props.deleteItem(props.id)}>Delete</button>
+    </ul>
 }
 
-export default TodoItem;
+export const CompletedItem = (props) => {
+    return <ul>
+    <input checked readOnly type="checkbox" onClick={() => props.handleItemUncheck(props.id)}/>
+    {props.title}
+    </ul>
+}
