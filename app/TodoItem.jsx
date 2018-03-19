@@ -2,7 +2,7 @@ import React from 'react';
 
 export const TodoItem = (props) =>{
     return <ul>
-        <input type="checkbox" onClick={() => props.handleItemCheck(props.id)}/>
+        <input type="checkbox" onClick={() => props.handleItemAfterCheckboxClick(props.id)}/>
         {props.title} -
         <button onClick={() => props.deleteItem(props.id)}>Delete</button>
     </ul>
@@ -10,7 +10,7 @@ export const TodoItem = (props) =>{
 
 export const CompletedItem = (props) => {
     return <ul>
-    <input checked readOnly type="checkbox" onClick={() => props.handleItemUncheck(props.id)}/>
+    <input checked readOnly type="checkbox" onClick={() => props.handleItemAfterCheckboxClick(props.id)}/>
     {props.title}
     </ul>
 }

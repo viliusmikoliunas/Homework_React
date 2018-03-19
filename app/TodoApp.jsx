@@ -6,12 +6,10 @@ export default class TodoApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      completedItemsIdList: [],
-      unfinishedItemsIdList: ['1','2'],
       inputValue: '',
       todoItemList: [
-        <TodoItem key="1" id="1" title="item 1" deleteItem={this.deleteItem.bind(this)} handleItemCheck={this.handleItemCheck.bind(this)}/>,
-        <TodoItem key="2" id="2" title="item 4" deleteItem={this.deleteItem.bind(this)} handleItemCheck={this.handleItemCheck.bind(this)}/>
+        <TodoItem key="1" id="1" title="item 1" deleteItem={this.deleteItem.bind(this)} handleItemAfterCheckboxClick={this.handleItemAfterCheckboxClick.bind(this)}/>,
+        <TodoItem key="2" id="2" title="item 4" deleteItem={this.deleteItem.bind(this)} handleItemAfterCheckboxClick={this.handleItemAfterCheckboxClick.bind(this)}/>
       ],
     };
   }
@@ -28,23 +26,17 @@ export default class TodoApp extends React.Component {
           id={newId}
           title={this.state.inputValue} 
           deleteItem={this.deleteItem.bind(this)}
-          handleItemCheck={this.handleItemCheck.bind(this)}
+          handleItemAfterCheckboxClick={this.handleItemAfterCheckboxClick.bind(this)}
         />
-      ],
-      unfinishedItemsIdList: [
-        ...this.state.unfinishedItemsIdList,
-        newId
-      ]
+      ]    
     });
     this.state.inputValue = '';
   }
 
   deleteItem(itemId){
     let newList = this.state.todoItemList.filter(item => item.props.id !== itemId);
-    let newUnfinishedIdList = this.state.unfinishedItemsIdList.filter(id => id !== itemId)
     this.setState({
-      todoItemList: newList,
-      unfinishedItemsIdList: newUnfinishedIdList
+      todoItemList: newList
     });
   }
 
@@ -54,35 +46,20 @@ export default class TodoApp extends React.Component {
     });
   }
 
-  handleItemCheck(itemId){
+  handleItemAfterCheckboxClick(itemId){
     let newList = this.state.todoItemList.filter(item => item.props.id !== itemId);
     let item = this.state.todoItemList.filter(item => item.props.id === itemId)[0];
-    let newUnfinishedIdList = this.state.unfinishedItemsIdList.filter(id => id !== itemId);
-    let compl = this.state.completedItemsIdList;
-    compl.push(item.props.id)
-    let newItem = <CompletedItem key={item.key} id={item.props.id} title={item.props.title} handleItemUncheck={this.handleItemUncheck.bind(this)}/>
+    let newItem;
+    if (item.type === TodoItem){
+      newItem = <CompletedItem key={item.key} id={item.props.id} title={item.props.title} handleItemAfterCheckboxClick={this.handleItemAfterCheckboxClick.bind(this)}/>
+    }
+    else{
+      newItem = <TodoItem key={item.key} id={item.props.id} title={item.props.title} deleteItem={this.deleteItem.bind(this)} handleItemAfterCheckboxClick={this.handleItemAfterCheckboxClick.bind(this)}/>
+    }
     newList.push(newItem);
     this.setState(
       {
         todoItemList: newList,
-        unfinishedItemsIdList: newUnfinishedIdList,
-        completedItemsIdList: compl
-      });
-  }
-
-  handleItemUncheck(itemId){
-    let newList = this.state.todoItemList.filter(item => item.props.id !== itemId);
-    let newCompletedItemsIdList = this.state.completedItemsIdList.filter(id => id !== itemId);
-    let toDoItems = this.state.unfinishedItemsIdList;
-    let item = this.state.todoItemList.filter(item => item.props.id === itemId)[0];
-    toDoItems.push(item.props.id)
-    let newItem = <TodoItem key={item.key} id={item.props.id} title={item.props.title} deleteItem={this.deleteItem.bind(this)} handleItemCheck={this.handleItemCheck.bind(this)}/>
-    newList.push(newItem);
-    this.setState(
-      {
-        todoItemList: newList,
-        unfinishedItemsIdList: toDoItems,
-        completedItemsIdList: newCompletedItemsIdList
       });
   }
 
